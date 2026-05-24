@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "docker-compose"
+    directory: "/validation"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "Europe/Paris"
+    allow:
+      - dependency-name: "quay.io/keycloak/keycloak"
+    labels:
+      - "dependencies"
+      - "keycloak"
+      - "e2e"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    open-pull-requests-limit: 3
