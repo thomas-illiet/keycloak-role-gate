@@ -31,8 +31,6 @@ needed to bind that flow to the target client.
 - [Script usage](./docs/script-usage.md): required inputs, variables, and examples.
 - [Client activation](./docs/client-activation.md): how to bind the generated flow to one OIDC client.
 - [Local validation](./docs/local-validation.md): optional Docker Compose validation environment.
-- [Continuous integration](./docs/ci.md): GitHub Actions E2E validation for `main` and pull requests.
-- [Dependabot updates](./docs/dependabot.md): automated Keycloak upgrade pull requests.
 - [Caveats](./docs/caveats.md): important security and Keycloak flow notes.
 
 ## Main Script
