@@ -3,15 +3,30 @@
 RoleGate creates the Browser Flow but does not activate it automatically in the
 main script.
 
-Activation is done with a client-level Browser Flow override:
+Activation is done with a client-level Browser Flow override. The simplest
+option is to let the Python script apply it:
 
 ```bash
-kcadm.sh update clients/<client-uuid> \
-  -r <realm> \
-  -s authenticationFlowBindingOverrides.browser=<flow-id>
+./scripts/rolegate-setup.sh --activate
 ```
 
-The script prints this command after creating the flow.
+The script prints the target client UUID and flow ID after creating the flow.
+If you want to apply the same update manually through Admin REST, send a `PUT`
+request to:
+
+```text
+/admin/realms/<realm>/clients/<client-uuid>
+```
+
+with the existing client representation updated to include:
+
+```json
+{
+  "authenticationFlowBindingOverrides": {
+    "browser": "<flow-id>"
+  }
+}
+```
 
 ## Why Client-Level Activation
 

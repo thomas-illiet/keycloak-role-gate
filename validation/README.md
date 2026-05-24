@@ -6,7 +6,7 @@ This directory contains the local validation environment used by the root
 The reusable Keycloak setup script lives at:
 
 ```bash
-../scripts/keycloak-create-client-role-flow.sh
+../scripts/rolegate-setup.sh
 ```
 
 Run the validation from the repository root:

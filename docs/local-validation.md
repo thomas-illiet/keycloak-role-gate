@@ -7,7 +7,7 @@ another user.
 This environment is optional. The reusable setup script is still:
 
 ```bash
-./scripts/keycloak-create-client-role-flow.sh
+./scripts/rolegate-setup.sh
 ```
 
 ## What It Starts

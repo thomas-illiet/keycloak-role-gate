@@ -19,11 +19,12 @@ export REQUIRED_ROLE=app-access
 export KEYCLOAK_ADMIN=admin
 export KEYCLOAK_ADMIN_PASSWORD=admin
 
-./scripts/keycloak-create-client-role-flow.sh
+./scripts/rolegate-setup.sh
 ```
 
-The script creates a dedicated Browser Flow and prints the `kcadm.sh` command
-needed to bind that flow to the target client.
+The script talks directly to the Keycloak Admin REST API. It creates a
+dedicated Browser Flow and can bind that flow to the target client with
+`--activate`.
 
 ## Documentation
 
@@ -36,7 +37,7 @@ needed to bind that flow to the target client.
 ## Main Script
 
 ```bash
-./scripts/keycloak-create-client-role-flow.sh
+./scripts/rolegate-setup.sh
 ```
 
 The validation code lives under [`validation/`](./validation/). It is not
