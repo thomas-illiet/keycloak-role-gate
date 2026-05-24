@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the local E2E realm through Keycloak Admin REST.
+"""Prepare the local validation realm through Keycloak Admin REST.
 
 The validation environment is allowed to create and destroy the test realm. It
 uses the same Admin REST client as the reusable RoleGate script so CI exercises
@@ -23,7 +23,7 @@ from scripts.rolegate_setup import (
 
 
 @dataclass(frozen=True)
-class E2EConfig:
+class ValidationConfig:
     """Environment-driven settings for the local validation realm."""
 
     server_url: str
@@ -39,11 +39,11 @@ class E2EConfig:
     reset_realm: bool
 
     @classmethod
-    def from_env(cls) -> E2EConfig:
+    def from_env(cls) -> ValidationConfig:
         target_client_id = os.getenv("TARGET_CLIENT_ID", "python-app")
         return cls(
             server_url=os.getenv("KC_SERVER_URL", "http://localhost:8080"),
-            realm=os.getenv("REALM", "role-gate-e2e"),
+            realm=os.getenv("REALM", "role-gate-validation"),
             target_client_id=target_client_id,
             required_role=os.getenv("REQUIRED_ROLE", "app-access"),
             oidc_client_secret=os.getenv("OIDC_CLIENT_SECRET", "python-app-secret"),
@@ -51,14 +51,14 @@ class E2EConfig:
             flow_alias=os.getenv("FLOW_ALIAS", f"{target_client_id}-role-gated-browser"),
             admin_username=os.getenv("KEYCLOAK_ADMIN", "admin"),
             admin_password=os.getenv("KEYCLOAK_ADMIN_PASSWORD", "admin"),
-            user_password=os.getenv("E2E_USER_PASSWORD", "password"),
-            reset_realm=_env_bool("RESET_E2E_REALM", True),
+            user_password=os.getenv("VALIDATION_USER_PASSWORD", "password"),
+            reset_realm=_env_bool("RESET_VALIDATION_REALM", True),
         )
 
 
 def main() -> int:
     """Create the realm, client, users, role mapping, and activated RoleGate flow."""
-    config = E2EConfig.from_env()
+    config = ValidationConfig.from_env()
     admin = KeycloakAdminClient(
         AdminConfig(
             server_url=config.server_url,
@@ -72,10 +72,12 @@ def main() -> int:
 
     if admin.realm_exists(config.realm):
         if config.reset_realm:
-            print(f"Deleting existing E2E realm {config.realm}...")
+            print(f"Deleting existing validation realm {config.realm}...")
             admin.delete_realm(config.realm)
         else:
-            print(f"Realm {config.realm} already exists and RESET_E2E_REALM=false; reusing it.")
+            print(
+                f"Realm {config.realm} already exists and RESET_VALIDATION_REALM=false; reusing it."
+            )
 
     if not admin.realm_exists(config.realm):
         print(f"Creating realm {config.realm}...")
@@ -115,11 +117,11 @@ def main() -> int:
     )
 
     print(f"Activated flow {result.flow_alias} on client {config.target_client_id}.")
-    print("E2E setup complete.")
+    print("Validation setup complete.")
     return 0
 
 
-def _ensure_client(admin: KeycloakAdminClient, config: E2EConfig) -> str:
+def _ensure_client(admin: KeycloakAdminClient, config: ValidationConfig) -> str:
     existing = admin.find_client(config.realm, config.target_client_id)
     if existing is None:
         admin.create_client(
@@ -149,7 +151,7 @@ def _ensure_client(admin: KeycloakAdminClient, config: E2EConfig) -> str:
 
 
 def _ensure_client_role(
-    admin: KeycloakAdminClient, config: E2EConfig, client_uuid: str
+    admin: KeycloakAdminClient, config: ValidationConfig, client_uuid: str
 ) -> dict[str, object]:
     try:
         return admin.get_client_role(config.realm, client_uuid, config.required_role)
@@ -162,7 +164,7 @@ def _ensure_client_role(
         client_uuid,
         {
             "name": config.required_role,
-            "description": "Required to access the Python E2E target",
+            "description": "Required to access the Python validation target",
         },
     )
     return admin.get_client_role(config.realm, client_uuid, config.required_role)
@@ -170,7 +172,7 @@ def _ensure_client_role(
 
 def _ensure_user(
     admin: KeycloakAdminClient,
-    config: E2EConfig,
+    config: ValidationConfig,
     username: str,
     first_name: str,
     last_name: str,
@@ -200,7 +202,7 @@ def _ensure_user(
 
 def _ensure_role_mapping(
     admin: KeycloakAdminClient,
-    config: E2EConfig,
+    config: ValidationConfig,
     user_id: str,
     client_uuid: str,
     role: dict[str, object],

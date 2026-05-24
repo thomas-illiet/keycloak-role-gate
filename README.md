@@ -1,6 +1,6 @@
 # RoleGate - Keycloak Client Role Gate
 
-[![E2E validation](https://github.com/thomas-illiet/keycloak-role-gate/actions/workflows/e2e.yml/badge.svg?branch=main)](https://github.com/thomas-illiet/keycloak-role-gate/actions/workflows/e2e.yml)
+[![Validation](https://github.com/thomas-illiet/keycloak-role-gate/actions/workflows/validation.yml/badge.svg?branch=main)](https://github.com/thomas-illiet/keycloak-role-gate/actions/workflows/validation.yml)
 
 !["banner"](./docs/assets/rolegate-banner.svg)
 

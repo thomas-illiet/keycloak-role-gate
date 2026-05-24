@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "keycloak_role_gate_e2e.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "keycloak_role_gate_validation.app:app", "--host", "0.0.0.0", "--port", "8000"]

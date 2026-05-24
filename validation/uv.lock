@@ -313,7 +313,7 @@ wheels = [
 ]
 
 [[package]]
-name = "keycloak-role-gate-e2e"
+name = "keycloak-role-gate-validation"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

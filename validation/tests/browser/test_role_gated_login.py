@@ -6,8 +6,8 @@ import re
 from playwright.sync_api import Page, expect
 
 APP_BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:8000")
-REALM = os.getenv("REALM", "role-gate-e2e")
-PASSWORD = os.getenv("E2E_USER_PASSWORD", "password")
+REALM = os.getenv("REALM", "role-gate-validation")
+PASSWORD = os.getenv("VALIDATION_USER_PASSWORD", "password")
 DENY_MESSAGE = os.getenv("DENY_MESSAGE", "Access denied: missing required role")
 
 

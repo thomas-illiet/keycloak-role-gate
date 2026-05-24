@@ -1,4 +1,4 @@
-"""FastAPI target app for the Keycloak E2E scenario.
+"""FastAPI target app for the Keycloak validation scenario.
 
 The app deliberately avoids application-level RBAC. It only performs the
 regular OIDC code flow and validates the ID token before creating a session.
@@ -32,7 +32,7 @@ class Settings:
 
     public_keycloak_url: str = os.getenv("OIDC_PUBLIC_KEYCLOAK_URL", "http://localhost:8080")
     internal_keycloak_url: str = os.getenv("OIDC_INTERNAL_KEYCLOAK_URL", "http://keycloak:8080")
-    realm: str = os.getenv("OIDC_REALM", "role-gate-e2e")
+    realm: str = os.getenv("OIDC_REALM", "role-gate-validation")
     client_id: str = os.getenv("OIDC_CLIENT_ID", "python-app")
     client_secret: str = os.getenv("OIDC_CLIENT_SECRET", "python-app-secret")
     redirect_uri: str = os.getenv("OIDC_REDIRECT_URI", "http://localhost:8000/auth/callback")
@@ -63,7 +63,7 @@ class Settings:
 
 
 settings = Settings()
-app = FastAPI(title="Keycloak role-gate E2E target")
+app = FastAPI(title="Keycloak role-gate validation target")
 app.add_middleware(
     SessionMiddleware,
     secret_key=settings.session_secret,

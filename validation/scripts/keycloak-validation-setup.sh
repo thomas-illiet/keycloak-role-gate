@@ -5,4 +5,4 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 PYTHONPATH="${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}" \
-  exec python3 "${SCRIPT_DIR}/keycloak-e2e-setup.py" "$@"
+  exec python3 "${SCRIPT_DIR}/keycloak-validation-setup.py" "$@"

@@ -1,4 +1,4 @@
-name: E2E validation
+name: Validation
 
 on:
   push:
@@ -13,12 +13,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: e2e-validation-${{ github.ref }}
+  group: validation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  e2e:
-    name: RoleGate E2E validation
+  validation:
+    name: RoleGate validation
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -37,8 +37,8 @@ jobs:
       - name: Add user Python bin to PATH
         run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - name: Run E2E validation
-        run: make e2e-ci
+      - name: Run validation
+        run: make validation-ci
 
       - name: Dump Docker Compose logs on failure
         if: failure()
@@ -46,4 +46,4 @@ jobs:
 
       - name: Clean validation environment
         if: always()
-        run: make e2e-clean
+        run: make validation-clean

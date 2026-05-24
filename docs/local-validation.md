@@ -16,7 +16,7 @@ The validation environment creates:
 
 - a Keycloak container;
 - a small Python target application;
-- a test realm named `role-gate-e2e`;
+- a test realm named `role-gate-validation`;
 - an OIDC client named `python-app`;
 - a client role named `app-access`;
 - user `allowed` with the role;
@@ -27,25 +27,25 @@ The validation environment creates:
 From the repository root:
 
 ```bash
-make e2e
+make validation
 ```
 
 Useful targets:
 
 ```bash
 make dev        # install Python dependencies and Playwright Chromium
-make e2e-up     # start the containers
-make e2e-setup  # configure Keycloak and activate the flow on the test client
-make e2e-test   # run the allowed/blocked browser checks
-make e2e-logs   # show Docker Compose logs
-make e2e-clean  # remove containers, volumes, and validation caches
+make validation-up     # start the containers
+make validation-setup  # configure Keycloak and activate the flow on the test client
+make validation-test   # run the allowed/blocked browser checks
+make validation-logs   # show Docker Compose logs
+make validation-clean  # remove containers, volumes, and validation caches
 ```
 
 ## Defaults
 
 - Keycloak: http://localhost:8080
 - Validation app: http://localhost:8000
-- Realm: `role-gate-e2e`
+- Realm: `role-gate-validation`
 - Client: `python-app`
 - Required role: `app-access`
 - Allowed user: `allowed` / `password`

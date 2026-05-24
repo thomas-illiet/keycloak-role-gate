@@ -12,7 +12,7 @@ The reusable Keycloak setup script lives at:
 Run the validation from the repository root:
 
 ```bash
-make e2e
+make validation
 ```
 
 See the full validation documentation in

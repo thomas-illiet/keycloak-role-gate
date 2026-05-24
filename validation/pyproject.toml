@@ -1,5 +1,5 @@
 [project]
-name = "keycloak-role-gate-e2e"
+name = "keycloak-role-gate-validation"
 version = "0.1.0"
 description = "Local validation app for the RoleGate Keycloak setup"
 readme = "README.md"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-keycloak-role-gate-e2e = "keycloak_role_gate_e2e:main"
+keycloak-role-gate-validation = "keycloak_role_gate_validation:main"
 
 [build-system]
 requires = ["uv_build>=0.8.11,<0.9.0"]

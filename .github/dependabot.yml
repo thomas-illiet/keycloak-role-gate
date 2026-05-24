@@ -12,7 +12,7 @@ updates:
     labels:
       - "dependencies"
       - "keycloak"
-      - "e2e"
+      - "validation"
     commit-message:
       prefix: "deps"
       include: "scope"

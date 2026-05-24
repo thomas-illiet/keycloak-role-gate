@@ -1,4 +1,4 @@
-name: keycloak-role-gate-e2e
+name: keycloak-role-gate-validation
 
 services:
   keycloak:
@@ -26,10 +26,10 @@ services:
     build:
       context: .
     environment:
-      APP_SESSION_SECRET: ${APP_SESSION_SECRET:-e2e-session-secret-change-me}
+      APP_SESSION_SECRET: ${APP_SESSION_SECRET:-validation-session-secret-change-me}
       OIDC_PUBLIC_KEYCLOAK_URL: ${OIDC_PUBLIC_KEYCLOAK_URL:-http://localhost:8080}
       OIDC_INTERNAL_KEYCLOAK_URL: ${OIDC_INTERNAL_KEYCLOAK_URL:-http://keycloak:8080}
-      OIDC_REALM: ${REALM:-role-gate-e2e}
+      OIDC_REALM: ${REALM:-role-gate-validation}
       OIDC_CLIENT_ID: ${TARGET_CLIENT_ID:-python-app}
       OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-python-app-secret}
       OIDC_REDIRECT_URI: ${APP_BASE_URL:-http://localhost:8000}/auth/callback
