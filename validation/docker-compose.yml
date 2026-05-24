@@ -13,8 +13,7 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
       KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
-      KC_OPTS: "-XX:UseSVE=0"
-      JAVA_OPTS_APPEND: "-XX:UseSVE=0"
+      JAVA_OPTS_APPEND: ${JAVA_OPTS_APPEND:-}
     ports:
       - "8080:8080"
     healthcheck:

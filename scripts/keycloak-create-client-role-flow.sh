@@ -6,7 +6,7 @@ KC_SERVER_URL="${KC_SERVER_URL:-http://localhost:8080}"
 BASE_FLOW="${BASE_FLOW:-browser}"
 DENY_MESSAGE="${DENY_MESSAGE:-Access denied: missing required role}"
 RECREATE="${RECREATE:-false}"
-KC_OPTS="${KC_OPTS:--XX:UseSVE=0}"
+KC_OPTS="${KC_OPTS:-}"
 
 : "${REALM:?REALM is required}"
 : "${TARGET_CLIENT_ID:?TARGET_CLIENT_ID is required}"
