@@ -11,8 +11,8 @@ services:
       - --hostname-strict=false
       - --health-enabled=true
     environment:
-      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
-      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${ROLEGATE_ADMIN_USERNAME:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${ROLEGATE_ADMIN_PASSWORD:-admin}
       JAVA_OPTS_APPEND: ${JAVA_OPTS_APPEND:-}
     ports:
       - "8080:8080"
@@ -26,13 +26,14 @@ services:
     build:
       context: .
     environment:
-      APP_SESSION_SECRET: ${APP_SESSION_SECRET:-validation-session-secret-change-me}
-      OIDC_PUBLIC_KEYCLOAK_URL: ${OIDC_PUBLIC_KEYCLOAK_URL:-http://localhost:8080}
-      OIDC_INTERNAL_KEYCLOAK_URL: ${OIDC_INTERNAL_KEYCLOAK_URL:-http://keycloak:8080}
-      OIDC_REALM: ${REALM:-role-gate-validation}
-      OIDC_CLIENT_ID: ${TARGET_CLIENT_ID:-python-app}
-      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-python-app-secret}
-      OIDC_REDIRECT_URI: ${APP_BASE_URL:-http://localhost:8000}/auth/callback
+      ROLEGATE_VALIDATION_SESSION_SECRET: ${ROLEGATE_VALIDATION_SESSION_SECRET:-validation-session-secret-change-me}
+      ROLEGATE_VALIDATION_PUBLIC_KEYCLOAK_URL: ${ROLEGATE_VALIDATION_PUBLIC_KEYCLOAK_URL:-http://localhost:8080}
+      ROLEGATE_VALIDATION_INTERNAL_KEYCLOAK_URL: ${ROLEGATE_VALIDATION_INTERNAL_KEYCLOAK_URL:-http://keycloak:8080}
+      ROLEGATE_REALM: ${ROLEGATE_REALM:-role-gate-validation}
+      ROLEGATE_TARGET_CLIENT_ID: ${ROLEGATE_TARGET_CLIENT_ID:-python-app}
+      ROLEGATE_VALIDATION_CLIENT_SECRET: ${ROLEGATE_VALIDATION_CLIENT_SECRET:-python-app-secret}
+      ROLEGATE_VALIDATION_REDIRECT_URI: ${ROLEGATE_VALIDATION_REDIRECT_URI:-${ROLEGATE_VALIDATION_APP_URL:-http://localhost:8000}/auth/callback}
+      ROLEGATE_VALIDATION_OIDC_SCOPE: ${ROLEGATE_VALIDATION_OIDC_SCOPE:-openid profile email}
     ports:
       - "8000:8000"
     depends_on:

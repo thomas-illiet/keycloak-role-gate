@@ -13,11 +13,11 @@ is redirected to the application.
 ## Quick Start
 
 ```bash
-export REALM=my-realm
-export TARGET_CLIENT_ID=my-product
-export REQUIRED_ROLE=app-access
-export KEYCLOAK_ADMIN=admin
-export KEYCLOAK_ADMIN_PASSWORD=admin
+export ROLEGATE_REALM=my-realm
+export ROLEGATE_TARGET_CLIENT_ID=my-product
+export ROLEGATE_REQUIRED_ROLE=app-access
+export ROLEGATE_ADMIN_USERNAME=admin
+export ROLEGATE_ADMIN_PASSWORD=admin
 
 ./scripts/rolegate-setup.sh
 ```

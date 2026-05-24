@@ -487,80 +487,86 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--server-url",
-        default=os.getenv("KC_SERVER_URL", DEFAULT_SERVER_URL),
-        help=f"Keycloak base URL. Env: KC_SERVER_URL. Default: {DEFAULT_SERVER_URL}",
+        default=os.getenv("ROLEGATE_KEYCLOAK_URL", DEFAULT_SERVER_URL),
+        help=f"Keycloak base URL. Env: ROLEGATE_KEYCLOAK_URL. Default: {DEFAULT_SERVER_URL}",
     )
-    parser.add_argument("--realm", default=os.getenv("REALM"), help="Target realm. Env: REALM")
+    parser.add_argument(
+        "--realm",
+        default=os.getenv("ROLEGATE_REALM"),
+        help="Target realm. Env: ROLEGATE_REALM",
+    )
     parser.add_argument(
         "--target-client-id",
-        default=os.getenv("TARGET_CLIENT_ID"),
-        help="OIDC client id to protect. Env: TARGET_CLIENT_ID",
+        default=os.getenv("ROLEGATE_TARGET_CLIENT_ID"),
+        help="OIDC client id to protect. Env: ROLEGATE_TARGET_CLIENT_ID",
     )
     parser.add_argument(
         "--required-role",
-        default=os.getenv("REQUIRED_ROLE"),
-        help="Client role required for login. Env: REQUIRED_ROLE",
+        default=os.getenv("ROLEGATE_REQUIRED_ROLE"),
+        help="Client role required for login. Env: ROLEGATE_REQUIRED_ROLE",
     )
     parser.add_argument(
         "--admin-username",
-        default=os.getenv("KEYCLOAK_ADMIN"),
-        help="Keycloak admin username. Env: KEYCLOAK_ADMIN",
+        default=os.getenv("ROLEGATE_ADMIN_USERNAME"),
+        help="Keycloak admin username. Env: ROLEGATE_ADMIN_USERNAME",
     )
     parser.add_argument(
         "--admin-password",
-        default=os.getenv("KEYCLOAK_ADMIN_PASSWORD"),
-        help="Keycloak admin password. Env: KEYCLOAK_ADMIN_PASSWORD",
+        default=os.getenv("ROLEGATE_ADMIN_PASSWORD"),
+        help="Keycloak admin password. Env: ROLEGATE_ADMIN_PASSWORD",
     )
     parser.add_argument(
         "--admin-realm",
-        default=os.getenv("KEYCLOAK_ADMIN_REALM", DEFAULT_ADMIN_REALM),
-        help=f"Realm used to authenticate the admin user. Env: KEYCLOAK_ADMIN_REALM. "
+        default=os.getenv("ROLEGATE_ADMIN_REALM", DEFAULT_ADMIN_REALM),
+        help=f"Realm used to authenticate the admin user. Env: ROLEGATE_ADMIN_REALM. "
         f"Default: {DEFAULT_ADMIN_REALM}",
     )
     parser.add_argument(
         "--admin-client-id",
-        default=os.getenv("KEYCLOAK_ADMIN_CLIENT_ID", DEFAULT_ADMIN_CLIENT_ID),
-        help=f"Admin token client id. Env: KEYCLOAK_ADMIN_CLIENT_ID. "
+        default=os.getenv("ROLEGATE_ADMIN_CLIENT_ID", DEFAULT_ADMIN_CLIENT_ID),
+        help=f"Admin token client id. Env: ROLEGATE_ADMIN_CLIENT_ID. "
         f"Default: {DEFAULT_ADMIN_CLIENT_ID}",
     )
     parser.add_argument(
         "--base-flow",
-        default=os.getenv("BASE_FLOW", DEFAULT_BASE_FLOW),
-        help=f"Browser Flow alias to copy. Env: BASE_FLOW. Default: {DEFAULT_BASE_FLOW}",
+        default=os.getenv("ROLEGATE_BASE_FLOW", DEFAULT_BASE_FLOW),
+        help=f"Browser Flow alias to copy. Env: ROLEGATE_BASE_FLOW. "
+        f"Default: {DEFAULT_BASE_FLOW}",
     )
     parser.add_argument(
         "--flow-alias",
-        default=os.getenv("FLOW_ALIAS", ""),
-        help="Generated flow alias. Env: FLOW_ALIAS. Default: <client>-role-gated-browser",
+        default=os.getenv("ROLEGATE_FLOW_ALIAS", ""),
+        help="Generated flow alias. Env: ROLEGATE_FLOW_ALIAS. "
+        "Default: <client>-role-gated-browser",
     )
     parser.add_argument(
         "--deny-subflow-alias",
-        default=os.getenv("DENY_SUBFLOW_ALIAS", ""),
-        help="Generated deny subflow alias. Env: DENY_SUBFLOW_ALIAS",
+        default=os.getenv("ROLEGATE_DENY_SUBFLOW_ALIAS", ""),
+        help="Generated deny subflow alias. Env: ROLEGATE_DENY_SUBFLOW_ALIAS",
     )
     parser.add_argument(
         "--deny-message",
-        default=os.getenv("DENY_MESSAGE", DEFAULT_DENY_MESSAGE),
-        help=f"Message shown by Keycloak to blocked users. Env: DENY_MESSAGE. "
+        default=os.getenv("ROLEGATE_DENY_MESSAGE", DEFAULT_DENY_MESSAGE),
+        help=f"Message shown by Keycloak to blocked users. Env: ROLEGATE_DENY_MESSAGE. "
         f"Default: {DEFAULT_DENY_MESSAGE!r}",
     )
     parser.add_argument(
         "--recreate",
         action="store_true",
-        default=_env_bool("RECREATE", False),
-        help="Delete and recreate the generated flow. Env: RECREATE=true",
+        default=_env_bool("ROLEGATE_RECREATE", False),
+        help="Delete and recreate the generated flow. Env: ROLEGATE_RECREATE=true",
     )
     parser.add_argument(
         "--activate",
         action="store_true",
-        default=_env_bool("ACTIVATE_CLIENT_FLOW", False),
-        help="Bind the generated flow to the target client. Env: ACTIVATE_CLIENT_FLOW=true",
+        default=_env_bool("ROLEGATE_ACTIVATE", False),
+        help="Bind the generated flow to the target client. Env: ROLEGATE_ACTIVATE=true",
     )
     parser.add_argument(
         "--timeout",
         type=float,
-        default=float(os.getenv("KEYCLOAK_API_TIMEOUT", str(DEFAULT_TIMEOUT))),
-        help=f"HTTP timeout in seconds. Env: KEYCLOAK_API_TIMEOUT. Default: {DEFAULT_TIMEOUT}",
+        default=float(os.getenv("ROLEGATE_API_TIMEOUT", str(DEFAULT_TIMEOUT))),
+        help=f"HTTP timeout in seconds. Env: ROLEGATE_API_TIMEOUT. Default: {DEFAULT_TIMEOUT}",
     )
     parser.add_argument(
         "--json",
@@ -576,11 +582,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     for option, value in (
-        ("--realm or REALM", args.realm),
-        ("--target-client-id or TARGET_CLIENT_ID", args.target_client_id),
-        ("--required-role or REQUIRED_ROLE", args.required_role),
-        ("--admin-username or KEYCLOAK_ADMIN", args.admin_username),
-        ("--admin-password or KEYCLOAK_ADMIN_PASSWORD", args.admin_password),
+        ("--realm or ROLEGATE_REALM", args.realm),
+        ("--target-client-id or ROLEGATE_TARGET_CLIENT_ID", args.target_client_id),
+        ("--required-role or ROLEGATE_REQUIRED_ROLE", args.required_role),
+        ("--admin-username or ROLEGATE_ADMIN_USERNAME", args.admin_username),
+        ("--admin-password or ROLEGATE_ADMIN_PASSWORD", args.admin_password),
     ):
         if not value:
             parser.error(f"{option} is required")

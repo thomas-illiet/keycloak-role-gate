@@ -32,6 +32,7 @@ class ValidationConfig:
     required_role: str
     oidc_client_secret: str
     app_base_url: str
+    redirect_uri: str
     flow_alias: str
     admin_username: str
     admin_password: str
@@ -40,19 +41,24 @@ class ValidationConfig:
 
     @classmethod
     def from_env(cls) -> ValidationConfig:
-        target_client_id = os.getenv("TARGET_CLIENT_ID", "python-app")
+        target_client_id = os.getenv("ROLEGATE_TARGET_CLIENT_ID", "python-app")
+        app_base_url = os.getenv("ROLEGATE_VALIDATION_APP_URL", "http://localhost:8000")
         return cls(
-            server_url=os.getenv("KC_SERVER_URL", "http://localhost:8080"),
-            realm=os.getenv("REALM", "role-gate-validation"),
+            server_url=os.getenv("ROLEGATE_KEYCLOAK_URL", "http://localhost:8080"),
+            realm=os.getenv("ROLEGATE_REALM", "role-gate-validation"),
             target_client_id=target_client_id,
-            required_role=os.getenv("REQUIRED_ROLE", "app-access"),
-            oidc_client_secret=os.getenv("OIDC_CLIENT_SECRET", "python-app-secret"),
-            app_base_url=os.getenv("APP_BASE_URL", "http://localhost:8000"),
-            flow_alias=os.getenv("FLOW_ALIAS", f"{target_client_id}-role-gated-browser"),
-            admin_username=os.getenv("KEYCLOAK_ADMIN", "admin"),
-            admin_password=os.getenv("KEYCLOAK_ADMIN_PASSWORD", "admin"),
-            user_password=os.getenv("VALIDATION_USER_PASSWORD", "password"),
-            reset_realm=_env_bool("RESET_VALIDATION_REALM", True),
+            required_role=os.getenv("ROLEGATE_REQUIRED_ROLE", "app-access"),
+            oidc_client_secret=os.getenv("ROLEGATE_VALIDATION_CLIENT_SECRET", "python-app-secret"),
+            app_base_url=app_base_url,
+            redirect_uri=os.getenv(
+                "ROLEGATE_VALIDATION_REDIRECT_URI",
+                f"{app_base_url}/auth/callback",
+            ),
+            flow_alias=os.getenv("ROLEGATE_FLOW_ALIAS", f"{target_client_id}-role-gated-browser"),
+            admin_username=os.getenv("ROLEGATE_ADMIN_USERNAME", "admin"),
+            admin_password=os.getenv("ROLEGATE_ADMIN_PASSWORD", "admin"),
+            user_password=os.getenv("ROLEGATE_VALIDATION_USER_PASSWORD", "password"),
+            reset_realm=_env_bool("ROLEGATE_VALIDATION_RESET_REALM", True),
         )
 
 
@@ -76,7 +82,8 @@ def main() -> int:
             admin.delete_realm(config.realm)
         else:
             print(
-                f"Realm {config.realm} already exists and RESET_VALIDATION_REALM=false; reusing it."
+                f"Realm {config.realm} already exists and "
+                "ROLEGATE_VALIDATION_RESET_REALM=false; reusing it."
             )
 
     if not admin.realm_exists(config.realm):
@@ -136,7 +143,7 @@ def _ensure_client(admin: KeycloakAdminClient, config: ValidationConfig) -> str:
                 "standardFlowEnabled": True,
                 "directAccessGrantsEnabled": False,
                 "serviceAccountsEnabled": False,
-                "redirectUris": [f"{config.app_base_url}/auth/callback"],
+                "redirectUris": [config.redirect_uri],
                 "webOrigins": [config.app_base_url],
                 "attributes": {
                     "post.logout.redirect.uris": config.app_base_url,

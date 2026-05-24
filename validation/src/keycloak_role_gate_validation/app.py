@@ -30,14 +30,26 @@ from starlette.responses import Response
 class Settings:
     """Runtime OIDC settings loaded from environment variables."""
 
-    public_keycloak_url: str = os.getenv("OIDC_PUBLIC_KEYCLOAK_URL", "http://localhost:8080")
-    internal_keycloak_url: str = os.getenv("OIDC_INTERNAL_KEYCLOAK_URL", "http://keycloak:8080")
-    realm: str = os.getenv("OIDC_REALM", "role-gate-validation")
-    client_id: str = os.getenv("OIDC_CLIENT_ID", "python-app")
-    client_secret: str = os.getenv("OIDC_CLIENT_SECRET", "python-app-secret")
-    redirect_uri: str = os.getenv("OIDC_REDIRECT_URI", "http://localhost:8000/auth/callback")
-    session_secret: str = os.getenv("APP_SESSION_SECRET", "dev-only-session-secret")
-    scope: str = os.getenv("OIDC_SCOPE", "openid profile email")
+    public_keycloak_url: str = os.getenv(
+        "ROLEGATE_VALIDATION_PUBLIC_KEYCLOAK_URL",
+        "http://localhost:8080",
+    )
+    internal_keycloak_url: str = os.getenv(
+        "ROLEGATE_VALIDATION_INTERNAL_KEYCLOAK_URL",
+        "http://keycloak:8080",
+    )
+    realm: str = os.getenv("ROLEGATE_REALM", "role-gate-validation")
+    client_id: str = os.getenv("ROLEGATE_TARGET_CLIENT_ID", "python-app")
+    client_secret: str = os.getenv("ROLEGATE_VALIDATION_CLIENT_SECRET", "python-app-secret")
+    redirect_uri: str = os.getenv(
+        "ROLEGATE_VALIDATION_REDIRECT_URI",
+        "http://localhost:8000/auth/callback",
+    )
+    session_secret: str = os.getenv(
+        "ROLEGATE_VALIDATION_SESSION_SECRET",
+        "dev-only-session-secret",
+    )
+    scope: str = os.getenv("ROLEGATE_VALIDATION_OIDC_SCOPE", "openid profile email")
 
     @property
     def issuer(self) -> str:

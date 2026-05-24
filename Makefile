@@ -1,24 +1,30 @@
 VALIDATION_DIR ?= validation
 COMPOSE_FILE ?= $(VALIDATION_DIR)/docker-compose.yml
-KEYCLOAK_ADMIN ?= admin
-KEYCLOAK_ADMIN_PASSWORD ?= admin
-REALM ?= role-gate-validation
-TARGET_CLIENT_ID ?= python-app
-REQUIRED_ROLE ?= app-access
-OIDC_CLIENT_SECRET ?= python-app-secret
-APP_BASE_URL ?= http://localhost:8000
-VALIDATION_USER_PASSWORD ?= password
+ROLEGATE_KEYCLOAK_URL ?= http://localhost:8080
+ROLEGATE_ADMIN_USERNAME ?= admin
+ROLEGATE_ADMIN_PASSWORD ?= admin
+ROLEGATE_REALM ?= role-gate-validation
+ROLEGATE_TARGET_CLIENT_ID ?= python-app
+ROLEGATE_REQUIRED_ROLE ?= app-access
+ROLEGATE_DENY_MESSAGE ?= Access denied: missing required role
+ROLEGATE_VALIDATION_APP_URL ?= http://localhost:8000
+ROLEGATE_VALIDATION_REDIRECT_URI ?= $(ROLEGATE_VALIDATION_APP_URL)/auth/callback
+ROLEGATE_VALIDATION_CLIENT_SECRET ?= python-app-secret
+ROLEGATE_VALIDATION_USER_PASSWORD ?= password
 
 export VALIDATION_DIR
 export COMPOSE_FILE
-export KEYCLOAK_ADMIN
-export KEYCLOAK_ADMIN_PASSWORD
-export REALM
-export TARGET_CLIENT_ID
-export REQUIRED_ROLE
-export OIDC_CLIENT_SECRET
-export APP_BASE_URL
-export VALIDATION_USER_PASSWORD
+export ROLEGATE_KEYCLOAK_URL
+export ROLEGATE_ADMIN_USERNAME
+export ROLEGATE_ADMIN_PASSWORD
+export ROLEGATE_REALM
+export ROLEGATE_TARGET_CLIENT_ID
+export ROLEGATE_REQUIRED_ROLE
+export ROLEGATE_DENY_MESSAGE
+export ROLEGATE_VALIDATION_APP_URL
+export ROLEGATE_VALIDATION_REDIRECT_URI
+export ROLEGATE_VALIDATION_CLIENT_SECRET
+export ROLEGATE_VALIDATION_USER_PASSWORD
 
 .PHONY: dev dev-ci validation-up validation-setup validation-test validation validation-ci validation-down validation-clean validation-logs lint
 
